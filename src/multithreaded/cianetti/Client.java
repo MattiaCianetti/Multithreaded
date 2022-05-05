@@ -12,49 +12,80 @@ package multithreaded.cianetti;
 import java.io.*;
 import java.net.*;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 // Client class
-class Client {
-	
-	// driver code
-	public static void main(String[] args)
-	{
-		// establish a connection by providing host and port
-		// number
-		try (Socket socket = new Socket("localhost", 1234)) {
-			
-			// writing to server
-			PrintWriter out = new PrintWriter(
-				socket.getOutputStream(), true);
+class Client
+{
+        ServerSocket ss;
+        Socket so;
+        BufferedWriter bw;
+        BufferedReader br;
 
-			// reading from server
-			BufferedReader in
-				= new BufferedReader(new InputStreamReader(
-					socket.getInputStream()));
-
-			// object of scanner class
-			Scanner sc = new Scanner(System.in);
-			String line = null;
-
-			while (!"exit".equalsIgnoreCase(line)) {
-				
-				// reading from user
-				line = sc.nextLine();
-
-				// sending the user input to server
-				out.println(line);
-				out.flush();
-
-				// displaying server reply
-				System.out.println("Server replied "
-								+ in.readLine());
-			}
-			
-			// closing the scanner object
-			sc.close();
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+    public Client(InetAddress ip, int porta) 
+    {
+        try 
+        {
+            so = new Socket(ip,porta);
+             //inputStream
+            br = new BufferedReader(new InputStreamReader(so.getInputStream()));
+            //outuputStream
+            bw = new BufferedWriter(new OutputStreamWriter(so.getOutputStream()));
+        } 
+        catch (IOException ex)
+        {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    
+    public void Ascolto()
+    {
+        try 
+        {
+            so = ss.accept();
+            System.out.println("Connessione stabilita");       
+        } 
+        catch (IOException ex) 
+        {
+            //eccezione IO
+            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void Scrivi(String messaggio)
+    {
+        try 
+        {
+            bw.write(messaggio + "\n");
+        } 
+        catch (IOException ex) 
+        {
+            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try
+        {
+            bw.flush();
+        } 
+        catch (IOException ex)
+        {
+            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+   
+    public String Leggi()
+    {
+        String ritorno = "";
+        try 
+        {
+             ritorno = br.readLine();
+        } 
+        catch (IOException ex)
+        {
+            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ritorno ;
+    }
 }
+
