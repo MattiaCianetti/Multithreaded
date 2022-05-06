@@ -11,14 +11,12 @@ package multithreaded.cianetti;
  */
 import java.io.*;
 import java.net.*;
-import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 // Client class
 class Client
 {
-        ServerSocket ss;
         Socket so;
         BufferedWriter bw;
         BufferedReader br;
@@ -38,20 +36,6 @@ class Client
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-    }
-    
-    public void Ascolto()
-    {
-        try 
-        {
-            so = ss.accept();
-            System.out.println("Connessione stabilita");       
-        } 
-        catch (IOException ex) 
-        {
-            //eccezione IO
-            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
     
     public void Scrivi(String messaggio)

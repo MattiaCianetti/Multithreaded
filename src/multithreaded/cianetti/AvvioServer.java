@@ -9,13 +9,14 @@ package multithreaded.cianetti;
  *
  * @author Studente
  */
-public class MultithreadedCianetti {
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
+public class AvvioServer 
+{
+     public static void main(String[] args)
+     {
+        Server s = new Server(2000);
+        s.Ascolto();
+        s.Scrivi("benvenuto client");
+        s.Leggi();
     }
     
 }

@@ -8,8 +8,6 @@ package multithreaded.cianetti;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Level;
@@ -32,7 +30,6 @@ public class Server
         {
             ss = new ServerSocket(porta);
             System.out.println("Server avviato");
-            ss.setSoTimeout(3000);
         } 
         catch (IOException ex) 
         {
@@ -47,10 +44,8 @@ public class Server
         {
             so = ss.accept();
             System.out.println("Connessione stabilita");
-            //inputStream
-            br = new BufferedReader(new InputStreamReader(so.getInputStream()));
-            //outuputStream
-            bw = new BufferedWriter(new OutputStreamWriter(so.getOutputStream()));
+            ClientHandler clientSock = new ClientHandler(so);
+            new Thread(clientSock).start();
         } 
         catch (IOException ex) 
         {
